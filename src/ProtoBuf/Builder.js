@@ -377,7 +377,12 @@ ProtoBuf.Builder = (function(ProtoBuf, Lang, Reflect) {
                 root = require("path")['resolve'](root);
             if (root.indexOf("\\") >= 0 || filename.file.indexOf("\\") >= 0)
                 delim = '\\';
-            var fname = root + delim + filename.file;
+            var fname;
+            if (ProtoBuf.Util.IS_NODE) {
+                fname = require('path')['join'](root, filename.file);
+            } else {
+                fname = root + delim + filename.file;
+            }
             if (this.files[fname] === true)
                 return this.reset();
             this.files[fname] = true;
